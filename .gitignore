@@ -1,0 +1,8 @@
+# Ignore all files excluding files with extension and folders unless specified
+*
+!/**/
+!*.*
+
+# Ignore /.vscode
+.vscode/*
+
