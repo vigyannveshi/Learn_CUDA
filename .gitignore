@@ -1,2 +1,7 @@
+# Ignore all binaries
+*
+!/**/
+!*.*
+
 # Ignore /.vscode
 .vscode/
