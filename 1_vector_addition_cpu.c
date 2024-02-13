@@ -1,3 +1,10 @@
+/*
+Vector Addition:
+--> This is a basic vector addition program that runs entirely on CPU
+--> Vectors of dynamic length can be created
+*/
+
+
 #include <stdio.h>
 #include <stdlib.h>
 
