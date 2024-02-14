@@ -1,9 +1,5 @@
 /* 
 Vector Addition GPU:
---> to compile the code:
-    `nvcc kernel.cu host.cu -o vectorAdd`
---> to run the code:
-    `./vectorAdd`
 */
 
 // header files

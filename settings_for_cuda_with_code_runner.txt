@@ -1,0 +1,4 @@
+To configure code-runner to make files and execute, we add these lines of code in settings.json
+This are system dependent, and can be found by running a make file and copying the content of the terminal 
+
+"cuda": "cd $dir && clear && /usr/local/cuda-11.4/bin/nvcc -ccbin g++ -I /usr/local/cuda-11.4/samples/common/inc -m64 --threads 0 -gencode arch=compute_35,code=sm_35 -gencode arch=compute_37,code=sm_37 -gencode arch=compute_50,code=sm_50 -gencode arch=compute_52,code=sm_52 -gencode arch=compute_60,code=sm_60 -gencode arch=compute_61,code=sm_61 -gencode arch=compute_70,code=sm_70 -gencode arch=compute_75,code=sm_75 -gencode arch=compute_80,code=sm_80 -gencode arch=compute_86,code=sm_86 -gencode arch=compute_86,code=compute_86 $fileName -o $fileNameWithoutExt && $dir$fileNameWithoutExt",
