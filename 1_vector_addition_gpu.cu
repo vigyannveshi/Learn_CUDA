@@ -7,18 +7,20 @@ Vector Addition GPU:
 */
 
 // header files
+#include <stdio.h>
 #include <cuda.h>
 #include <cuda_runtime.h>
+#include <helper_cuda.h>
 
 /* Kernel function Prototype*/
-__global__ void vectorAdd(float *, float *,float *, int);
+// __global__ void vectorAdd(float *, float *,float *, int);
 
 /* Kernel function Implementation/Definition */
-__global__
-void vectorAdd(float *A, float *B, float *C, int n ){
+__global__ void vectorAdd(const float *A,const  float *B, float *C, int n ){
     int i=threadIdx.x+blockDim.x*blockIdx.x;
-    if (i<n)
+    if (i<n){
         C[i]=A[i]+B[i];
+    }
 }
 
 
@@ -121,4 +123,39 @@ void vecAdd(float* h_A, float *h_B, float *h_C, int n){
         }
     }
     printf("Test Passed");
+}
+
+int main(void){
+    int n;
+    printf("Enter the vector length: ");
+    scanf("%d",&n);
+    int size = n*sizeof(float);
+
+    // Allocate the host input vector A
+    float *h_A = (float *)malloc(size);
+
+    // Allocate the host input vector B
+    float *h_B = (float *)malloc(size);
+
+    // Allocate the host output vector C
+    float *h_C = (float *)malloc(size);
+
+    // Verify that allocations succeeded
+    if (h_A == NULL || h_B == NULL || h_C == NULL)
+    {
+        fprintf(stderr, "Failed to allocate host vectors!\n");
+        exit(EXIT_FAILURE);
+    }
+
+    // Initialize the host input vectors
+    for (int i = 0; i < n; ++i)
+    {
+        h_A[i] = rand()/(float)RAND_MAX;
+        h_B[i] = rand()/(float)RAND_MAX;
+    }
+
+    // Running the vector addition
+
+    vecAdd(h_A, h_B, h_C, n);
+    return 0;
 }
