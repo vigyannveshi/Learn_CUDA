@@ -15,7 +15,7 @@ Vector Addition GPU:
 __global__ void vectorAdd(const float *A,const  float *B, float *C, int n ){
     int i=threadIdx.x+blockDim.x*blockIdx.x;
     if (i<n){
-        C[i]=A[i]+B[i];
+        C[i]=A[i]*B[i];
     }
 }
 
@@ -113,7 +113,7 @@ void vecAdd(float* h_A, float *h_B, float *h_C, int n){
 
     // Verify that the result vector is correct 
     for (int i = 0; i<n; i++){
-        if (fabs(h_A[i]+h_B[i]-h_C[i])>1e-5){
+        if (fabs(h_A[i]*h_B[i]-h_C[i])>1e-5){
             fprintf(stderr, "Result verification failed at element %d\n",i);
             exit(EXIT_FAILURE);
         }

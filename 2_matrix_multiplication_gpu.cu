@@ -12,25 +12,83 @@ __global__
 void MatrixMulKernel(float * d_M, float* d_N, float* d_P, int n){
     int i=blockIdx.y*blockDim.y+threadIdx.y;
     int j=blockIdx.x*blockDim.x+threadIdx.x;
-    if ((i<N) && (j<N)){
+    if ((i<n) && (j<n)){
         float Pvalue =0.0;
-        for(int k=0; k<N;k++){
-            Pvalue+=d_M[i*n+k]*d_N[k*n+j]
+        for(int k=0; k<n;k++){
+            Pvalue+=d_M[i*n+k]*d_N[k*n+j];
         }
         d_P[i*n+j]=Pvalue;
     }
 }
 
-int main(){
-    int size = 16*16
-    cudaMemcpy(d_M,M,size*sizeof(float), cudaMemcpyHostToDevice);
-    cudaMemcpy(d_N,N,size*sizeof(float), cudaMemcpyHostToDevice);
+int main() {
+    int n = 500;
+    int size = n * n;
 
-    dim3 grid(2,2,1);  // (2x2x1) --> 4 Thread blocks/grid
-    dim3 block(8,8,1); // (8x8x1) --> 64 Threads/block
-    // Total threads --> 4*64=256
-    int N=16; // n is the number of rows and columns
-    MatrixMulKernel <<<grid,block>>>(d_M,d_N,d_P,n);
-    cudaMemcpy(P,d_P,size*sizeof(float), cudaMemcpyDeviceToHost);
+    // Allocate memory for host matrices
+    float *h_M = (float *)malloc(size * sizeof(float));
+    float *h_N = (float *)malloc(size * sizeof(float));
+    float *h_P = (float *)malloc(size * sizeof(float));
+
+    // Initialize host matrices with some values
+    for (int i = 0; i < size; i++) {
+        h_M[i] = i;  // Example initialization, you can set your own values
+        h_N[i] = i;
+    }
+
+    // Allocate memory on the device for matrices
+    float *d_M, *d_N, *d_P;
+    cudaMalloc(&d_M, size * sizeof(float));
+    cudaMalloc(&d_N, size * sizeof(float));
+    cudaMalloc(&d_P, size * sizeof(float));
+
+    // Transfer host matrices to device
+    cudaMemcpy(d_M, h_M, size * sizeof(float), cudaMemcpyHostToDevice);
+    cudaMemcpy(d_N, h_N, size * sizeof(float), cudaMemcpyHostToDevice);
+
+    // Define grid and block dimensions
+    dim3 grid(2, 2);    // 2x2 grid
+    dim3 block(8, 8);   // 8x8 threads per block
+
+    // Perform matrix multiplication on GPU
+    MatrixMulKernel<<<grid, block>>>(d_M, d_N, d_P, n);
+
+    // Transfer result matrix from device to host
+    cudaMemcpy(h_P, d_P, size * sizeof(float), cudaMemcpyDeviceToHost);
+
+    // Verify result (printing only a part of the matrix for brevity)
+    // printf("M: ");
+    // for (int i = 0; i < n; i++) {
+    //     for (int j = 0; j < n; j++) {
+    //         printf("%.2f\t", h_M[i * n + j]);
+    //     }
+    //     printf("\n");
+    // }
+    // printf("N: ");
+    // for (int i = 0; i < n; i++) {
+    //     for (int j = 0; j < n; j++) {
+    //         printf("%.2f\t", h_N[i * n + j]);
+    //     }
+    //     printf("\n");
+    // }
+    // printf("Result matrix (partial):\n");
+    // for (int i = 0; i < n; i++) {
+    //     for (int j = 0; j < n; j++) {
+    //         printf("%.2f\t", h_P[i * n + j]);
+    //     }
+    //     printf("\n");
+    // }
+
+    printf("successfully calculated!");
+
+    
+    // Free host and device memory
+    free(h_M);
+    free(h_N);
+    free(h_P);
+    cudaFree(d_M);
+    cudaFree(d_N);
+    cudaFree(d_P);
+
     return 0;
 }
