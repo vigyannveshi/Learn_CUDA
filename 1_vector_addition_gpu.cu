@@ -1,15 +1,20 @@
 /* 
-Vector Addition GPU:
+    Vector Addition GPU:
+    --> Three vectors of variable length with floating point elements are created dynamically on the host (CPU).
+    --> Vectors are initialized on device (GPU) with floating point elements dynamically using `cudaMalloc`. 
+    --> Vectors are initialized with random numbers between (0-1).
+    --> Vector's data is copied from host to device using `cudaMemCopy`.
+    --> Kernel for the GPU for vector addition based on concept of SIMT is created,
+    --> We run the vector addition
+    --> The output from the device is copied back to host using `cudaMemCpy`.
+    --> Testing of output (absolute(Sum_vector - vector_1 - vector_2)<1e-5 -- expected).
+    --> Vectors (both host and device) are freed.
 */
 
 // header files
 #include <stdio.h>
-#include <cuda.h>
 #include <cuda_runtime.h>
 #include <helper_cuda.h>
-
-/* Kernel function Prototype*/
-// __global__ void vectorAdd(float *, float *,float *, int);
 
 /* Kernel function Implementation/Definition */
 __global__ void vectorAdd(const float *A,const  float *B, float *C, int n ){
@@ -21,7 +26,7 @@ __global__ void vectorAdd(const float *A,const  float *B, float *C, int n ){
 
 
 /* CPU side host program */ 
-void vecAdd(float* h_A, float *h_B, float *h_C, int n){
+__host__ void vecAdd(float* h_A, float *h_B, float *h_C, int n){
     int size = n*sizeof(float);
     float *d_A=NULL, *d_B=NULL, *d_C=NULL;
 

@@ -22,7 +22,7 @@ void MatrixMulKernel(float * d_M, float* d_N, float* d_P, int n){
 }
 
 int main() {
-    int n = 500000;
+    int n = 500000000;
     int size = n * n;
 
     // Allocate memory for host matrices

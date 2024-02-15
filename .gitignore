@@ -5,3 +5,7 @@
 
 # Ignore /.vscode
 .vscode/
+
+
+# Ignore (learnings.c)
+learnings.c
