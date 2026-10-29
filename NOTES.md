@@ -1,10 +1,10 @@
-## **Compute Unified Device Architecture (CUDA)**
+  ## **Compute Unified Device Architecture (CUDA)**
 
 ### **Installations:**
 
 **1. Creating conda environment**
 ```
-    conda create --prefix conda_env_path/learn_cuda python=3.10 -y
+    conda create --prefix /home/SSD2/rudraksha14/conda_environments/learn_cuda python=3.10 -y
 ```
 
 **2. Installing CUDA toolkit**
@@ -22,7 +22,7 @@ conda install -c nvidia/label/cuda-12.1.0 cuda-toolkit -y
   * Device: Nvidia-GPU + GDRAM .
 
 * Hardware has 4 levels <--> Software
-  1. GPU itself   < -- > Group of Blocks/Thread Blocks.
+  1. GPU itself   < -- > Group of Blocks/Thread Blocks (GRID).
   2. Streaming Multiprocessors (SMs) < -- > each block/ thread block.
   3. Partitions (eg: Volta and Ampere architecture has 4 such partitions per SM) < -- > warps.
   4. Individual Computational units within each partition (granular level), eg: FP32 core <--> thread.
@@ -32,9 +32,11 @@ conda install -c nvidia/label/cuda-12.1.0 cuda-toolkit -y
 * Each block is sub-divided into warps. 
 * A warp typically consists of 32 threads.
 
+GRID -> BLOCK -> WARPS -> THREAD
+
 **CUDA programming**
 
 * A kernel in CUDA <--> function in C/C++ to be executed on GPU.
 * `__global__` is used as return type for kernels.
-* Compiling the program `nvcc input_path/filename.cu -o output_path/filename_out.cu` 
+* Compiling the program `nvcc input_path/filename.cu -o output_path/filename_out` 
 * Executing the application `./output_path/filename_out.cu`

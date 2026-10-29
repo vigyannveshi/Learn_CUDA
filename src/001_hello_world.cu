@@ -1,3 +1,9 @@
+/*
+@file           001_hello_workd.cu
+@purpose        To understand basic cuda program, threads and blocks
+@author         Rudraksha R. Bandodkar
+*/
+
 #include "cuda_runtime.h"
 #include "device_launch_parameters.h"
 
@@ -13,7 +19,7 @@ __global__ void test01()
 int main()
 {
     // kernel_name<<< num_of_blocks, number of threads_per_block>>>(); 
-    test01 <<< 2 ,1024 >>> ();
+    test01 <<< 1 , 1024 >>> ();
     // test01 <<< 1 ,2048 >>> (); // doesn't work, since max limit in total threads per-block is 1024 for Ampere architecture
 
     cudaDeviceSynchronize(); // wait for GPU to finish + flush printf buffer
